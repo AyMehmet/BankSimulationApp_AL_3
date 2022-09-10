@@ -26,7 +26,7 @@ public class AccountRepository {
         //write a method, that finds the account inside the list, if not throws
         //RecordNotFoundException
         return accountList.stream().filter(account -> account.getId().equals(id))
-                .findAny().orElseThrow(()-> new RecordNotFoundException("Account not exist in the database."));
-
-
+                .findAny().orElseThrow(() -> new RecordNotFoundException("Account not exist in the database."));
     }
+
+}

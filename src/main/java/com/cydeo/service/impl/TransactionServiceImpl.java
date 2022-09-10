@@ -7,7 +7,9 @@ import com.cydeo.exception.BalanceNotSufficientException;
 import com.cydeo.model.Account;
 import com.cydeo.model.Transaction;
 import com.cydeo.repository.AccountRepository;
+import com.cydeo.repository.TransactionRepository;
 import com.cydeo.service.TransactionService;
+import lombok.Value;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -18,10 +20,14 @@ import java.util.UUID;
 @Component
 public class TransactionServiceImpl implements TransactionService {
     AccountRepository accountRepository;
+    TransactionRepository transactionRepository;
 
-    public TransactionServiceImpl(AccountRepository accountRepository) {
+    public TransactionServiceImpl(AccountRepository accountRepository, TransactionRepository transactionRepository) {
         this.accountRepository = accountRepository;
+        this.transactionRepository = transactionRepository;
     }
+    @Value{$under_construction}
+    public  boolean underconstraction;
 
     @Override
     public Transaction makeTransfer(Account sender, Account receiver, BigDecimal amount, Date creationDate, String message) {
@@ -33,7 +39,13 @@ public class TransactionServiceImpl implements TransactionService {
         after all validations are completed, and money is transferred, we need to create Transaction object and save/return it
          */
         //please create needed classes/ methods for this step, save the transactions.
-        return null;
+
+
+        Transaction transaction = Transaction.builder().amount(amount)
+                .sender(sender.getId()).receiver(receiver.getId())
+                .creationDate(creationDate).message(message).build();
+        return transaction;
+
     }
 
     private void executeBalanceAndUpdateIfRequired(BigDecimal amount, Account sender, Account receiver) {
@@ -95,6 +107,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public List<Transaction> findAllTransfer() {
-        return null;
+
+        return  transactionRepository.findALL();
     }
 }
